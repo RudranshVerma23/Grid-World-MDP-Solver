@@ -86,7 +86,7 @@ flowchart TD
 
 ### Overview
 
-We study a predator-prey process on an \(N \times N\) grid. A state records
+We study a predator-prey process on an `N x N` grid. A state records
 the predator and prey locations, and an action specifies the predator's
 movement. The simulator applies the movement rules, handles boundary
 conditions, samples the prey dynamics, and returns the next state and reward.
@@ -94,7 +94,7 @@ This simulator provides the operational definition of the environment used
 throughout the assignment.
 
 We use the simulator to build a finite MDP with a transition kernel
-\(P(s' \mid s,a)\) and expected reward function \(R(s,a)\). The resulting
+`P(s' | s, a)` and expected reward function `R(s, a)`. The resulting
 model lets us compare policy evaluation, optimal-control algorithms, and
 finite-sample model estimation while keeping the environment dynamics fixed.
 
@@ -105,17 +105,17 @@ The reference policy assigns action probabilities according to the
 distance-minimizing predator strategy, with stochasticity where multiple
 actions are equally desirable. We then induce a Markov chain under this policy:
 
-\[
-P^\pi(s,s') = \sum_a \pi(a\mid s)P(s'\mid s,a), \qquad
-R^\pi(s) = \sum_a \pi(a\mid s)R(s,a).
-\]
+```text
+P^pi(s, s') = sum_a pi(a | s) P(s' | s, a)
+R^pi(s)      = sum_a pi(a | s) R(s, a)
+```
 
 The state-value evaluator solves the discounted Bellman expectation equation
-for \(V^\pi\). The action-value evaluator subsequently derives \(Q^\pi(s,a)\)
+for `V^pi`. The action-value evaluator subsequently derives `Q^pi(s, a)`
 from the state values and the original model. We repeat the computation over
 several grid sizes and examine both the initial-state value and computational
 cost. Because the state contains two grid locations, the state space grows
-rapidly with \(N\), making the runtime comparison part of the analysis.
+rapidly with `N`, making the runtime comparison part of the analysis.
 
 The experiment is orchestrated by
 [`Assignment1_Q1/Q1j.ipynb`](./Assignment1_Q1/Q1j.ipynb). Its supporting
@@ -145,14 +145,14 @@ descriptions in [`Assignment1_Q2/README.md`](./Assignment1_Q2/README.md).
 Finally, we assume that the exact transition probabilities are unavailable.
 For every state-action pair, we repeatedly sample the simulator and estimate
 the transition probabilities by empirical frequencies. The estimated kernel
-\(\hat P\) is then supplied to the value-iteration solver to produce an
+`P_hat` is then supplied to the value-iteration solver to produce an
 estimated action-value function.
 
-We measure the \(L_1\) error between quantities computed with the estimated
+We measure the `L1` error between quantities computed with the estimated
 model and the corresponding quantities from the exact model. By increasing
-the number of samples \(K\), we study convergence of the empirical kernel and
+the number of samples `K`, we study convergence of the empirical kernel and
 the resulting value estimates. Repeating the experiment over multiple random
-seeds also exposes estimator variance: increasing \(K\) should reduce both the
+seeds also exposes estimator variance: increasing `K` should reduce both the
 mean error and the spread of the results. The experiment therefore connects
 simulation-based model learning with the stability of downstream planning.
 
@@ -175,9 +175,9 @@ an explicitly constructed transition kernel.
 For each episode, we collect the sampled trajectory and compute the discounted
 return
 
-\[
-G_t = \sum_{k=t}^{T-1}\gamma^{k-t}r_k.
-\]
+```text
+G_t = sum_{k=t}^{T-1} gamma^(k-t) r_k
+```
 
 The gradient-estimation routine applies the likelihood-ratio, or REINFORCE,
 estimator to maximize the expected discounted return. We average estimates over
